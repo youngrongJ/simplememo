@@ -21,18 +21,32 @@ async function editMemo(event) {
   readMemo();
 }
 
+async function deleteMemo(event) {
+  const id = event.target.dataset.id;
+  const res = await fetch(`/memos/${id}`, {
+    method: "DELETE",
+  });
+  readMemo();
+}
+
 function displayMemo(memo) {
   const ul = document.querySelector("#ul");
   const li = document.createElement("li");
   const editBtn = document.createElement("button");
+  const deleteBtn = document.createElement("button");
 
   li.innerText = `[id:${memo.id}] ${memo.content}`;
   editBtn.innerText = "수정하기";
+  deleteBtn.innerText = "삭제";
   editBtn.addEventListener("click", editMemo);
+  deleteBtn.addEventListener("click", deleteMemo);
+
   editBtn.dataset.id = memo.id; //wordle게임 만들 때 data-id = 00 이런식으로 작성했던것을 javascript에서 넣는 것
+  deleteBtn.dataset.id = memo.id;
 
   ul.appendChild(li);
   li.appendChild(editBtn);
+  li.appendChild(deleteBtn);
 }
 
 async function readMemo() {
